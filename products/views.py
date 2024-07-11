@@ -9,7 +9,6 @@ from .serializable import ProductSerializer
 
 @api_view(['GET'])
 def index(request):
-
     products = Product.objects.all()
     serializer = ProductSerializer(products, many=True)
     return Response(serializer.data)

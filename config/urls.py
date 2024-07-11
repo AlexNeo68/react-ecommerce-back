@@ -17,14 +17,12 @@ Including another URLconf
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
-from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
-)
 
+from base.views import MyTokenObtainPairView
 from config import settings
 
 urlpatterns = [
-    path('api/users/login', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path("api/users/login", MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path("admin/", admin.site.urls),
     path('api/', include('base.urls', namespace='base')),
     path('api/products/', include('products.urls', namespace='products')),
