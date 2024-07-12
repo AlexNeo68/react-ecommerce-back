@@ -18,14 +18,13 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 
-from base.views import MyTokenObtainPairView
 from config import settings
 
 urlpatterns = [
-    path("api/users/login", MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path("admin/", admin.site.urls),
     path('api/', include('base.urls', namespace='base')),
     path('api/products/', include('products.urls', namespace='products')),
+    path('api/users/', include('users.urls', namespace='users')),
 ]
 
 

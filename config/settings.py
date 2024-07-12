@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     "corsheaders",
     "rest_framework",
     "base.apps.BaseConfig",
-    "products.apps.ProductsConfig"
+    "products.apps.ProductsConfig",
+    "users.apps.UsersConfig",
 
 ]
 
