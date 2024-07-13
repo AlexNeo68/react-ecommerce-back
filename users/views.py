@@ -23,7 +23,29 @@ def signup(request):
         serializer = UserSerializerWithToken(user, many=False)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     except Exception as e:
-        print(e)
+        print(type(e))
+        print(e.args)
+        message = {'detail': str(e)}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def update_profile(request):
+    data = request.data
+    user = request.user
+    try:
+        user.name = data['name']
+        user.email = data['email']
+        if data['password'] != make_password(data['password']):
+            user.password = make_password(data['password'])
+        user.save()
+
+        serializer = UserSerializerWithToken(user, many=False)
+        return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
+    except Exception as e:
+        print(type(e))
+        print(e.args)
         message = {'detail': str(e)}
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
