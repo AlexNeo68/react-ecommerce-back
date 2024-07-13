@@ -22,7 +22,8 @@ def signup(request):
         )
         serializer = UserSerializerWithToken(user, many=False)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
-    except BaseException as e:
+    except Exception as e:
+        print(e)
         message = {'detail': str(e)}
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
