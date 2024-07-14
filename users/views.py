@@ -35,8 +35,9 @@ def update_profile(request):
     data = request.data
     user = request.user
     try:
-        user.name = data['name']
+        user.first_name = data['name']
         user.email = data['email']
+        user.username = data['email']
         if data['password'] != make_password(data['password']):
             user.password = make_password(data['password'])
         user.save()
