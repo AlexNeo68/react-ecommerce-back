@@ -1,4 +1,3 @@
-
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -51,3 +50,19 @@ def place_order(request):
 
         order_serializer = OrderSerializer(order, many=False)
         return Response(order_serializer.data, status=status.HTTP_201_CREATED)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_order(request, pk):
+    user = request.user
+    try:
+        order = Order.objects.get(pk=pk)
+        if user.is_staff or user == order.user:
+            serializer = OrderSerializer(order, many=False)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response({'detail': 'Not authorized'}, status=status.HTTP_401_UNAUTHORIZED)
+    except:
+        return Response({'detail': 'Order does not exist'}, status=status.HTTP_400_BAD_REQUEST)
+
