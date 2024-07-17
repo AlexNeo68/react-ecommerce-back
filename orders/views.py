@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from base.models import Order, ShippingAddress, OrderItem, Product
-from orders.serializers import OrderSerializer
+from orders.serializers import OrderSerializer, OrderItemSerializer
 
 
 @api_view(['POST'])
@@ -37,16 +37,17 @@ def place_order(request):
         )
 
         for item in order_items:
-            product = Product.objects.get(id=item['_id'])
+            product = Product.objects.get(pk=item['_id'])
             OrderItem.objects.create(
                 order=order,
                 product=product,
                 name=product.name,
-                qty=item.qty,
+                qty=item['qty'],
                 price=product.price,
                 image=product.image.url
             )
-            product.countInStock -= item.qty
+            product.countInStock -= item['qty']
             product.save()
 
-        return Response(OrderSerializer(order, many=False).data)
+        order_serializer = OrderSerializer(order, many=False)
+        return Response(order_serializer.data, status=status.HTTP_201_CREATED)
