@@ -77,3 +77,12 @@ def pay(request, pk):
     order.paidAt = datetime.now()
     order.save()
     return Response('Order paid', status=status.HTTP_202_ACCEPTED)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_my_orders(request):
+    user = request.user
+    orders = user.orders.all()
+    serializer = OrderSerializer(orders, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
